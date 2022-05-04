@@ -22,6 +22,7 @@ class Tree
     root
   end
 
+  # This is a Ruby version of: https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/?ref=lbp
   def insert(root, value)
     if root.nil?
       root = Node.new(value)
@@ -37,6 +38,39 @@ class Tree
     root
   end
 
+  # This is a Ruby version of: https://www.geeksforgeeks.org/binary-search-tree-set-2-delete/?ref=lbp
+  def delete(root, value)
+    return root if root.nil?
+
+    if value < root.data
+      root.left = delete(root.left, value)
+    elsif value > root.data
+      root.right = delete(root.right, value)
+    else
+      if root.left.nil?
+        return root.right
+      elsif root.right.nil?
+        return root.left
+      end
+
+      # Get the in-order successor (smallest value in right subtree)
+      root.data = minimum_value(root.right)
+
+      # Delete the in-order successor
+      root.right = delete(root.right, root.data)
+    end
+    root
+  end
+
+  def minimum_value(root)
+    min = root.data
+    until root.left.nil?
+      min = root.left.data
+      root = root.left
+    end
+    min
+  end
+
   # Method provided by student of TOP
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -45,7 +79,9 @@ class Tree
   end
 end
 
-tree = Tree.new([9, 8, 9, 1, 7, 3, 1, 9, 5, 2, 4])
-tree.insert(tree.root, 6)
+tree = Tree.new([90, 80, 90, 10, 70, 30, 10, 90, 50, 20, 40])
+tree.insert(tree.root, 60)
+tree.insert(tree.root, 5)
+tree.insert(tree.root, 25)
 tree.pretty_print
-tree.insert(tree.root, 4)
+tree.delete(tree.root, 20)
