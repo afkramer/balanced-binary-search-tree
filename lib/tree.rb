@@ -71,6 +71,18 @@ class Tree
     min
   end
 
+  def find(root, value)
+    return root if root.nil?
+
+    if root.data < value
+      find(root.right, value)
+    elsif root.data > value
+      find(root.left, value)
+    else
+      root
+    end
+  end
+
   # Method provided by student of TOP
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -84,4 +96,4 @@ tree.insert(tree.root, 60)
 tree.insert(tree.root, 5)
 tree.insert(tree.root, 25)
 tree.pretty_print
-tree.delete(tree.root, 20)
+tree.find(tree.root, 25)
