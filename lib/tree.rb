@@ -110,7 +110,6 @@ class Tree
   end
 
   # first left subtree, then root, then right subtree
-  # READY TO TEST, I THINK
   def inorder(root = @root, values = [], &block)
     return root if root.nil?
 
@@ -122,21 +121,25 @@ class Tree
   end
 
   # first visit root, then left, then right sub-trees
-  def preorder
-  end
-
-  # first left, then right subtrees then root
-  def postorder
-  end
-
-  # Nope --> this does a kind of depth first search
-  def level_order_rec_1(root, values = [])
+  def preorder(root = @root, values = [], &block)
     return root if root.nil?
 
     block_given? ? yield(root) : values << root.data
-    level_order_rec(root.left, values)
-    level_order_rec(root.right, values)
-    return values unless values.empty?
+    preorder(root.left, values, &block)
+    preorder(root.right, values, &block)
+
+    return values unless block_given?
+  end
+
+  # first left, then right subtrees then root
+  def postorder(root = @root, values = [], &block)
+    return root if root.nil?
+
+    postorder(root.left, values, &block)
+    postorder(root.right, values, &block)
+    block_given? ? yield(root) : values << root.data
+
+    return values unless block_given?
   end
 
   # Method provided by student of TOP
@@ -155,5 +158,4 @@ tree.find(tree.root, 25)
 tree2 = Tree.new([36,81,50,30,20,85,82,75,34,32,85,81,50,40,70,60,82,81,65,70,32,36,75])
 tree2.insert(tree2.root, 42)
 tree2.insert(tree2.root, 90)
-# tree2.pretty_print
-p tree2.inorder
+p tree2.postorder
