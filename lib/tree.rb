@@ -142,6 +142,18 @@ class Tree
     return values unless block_given?
   end
 
+  # Number of edges in longest path from a given node to a leaf node
+  def height(node)
+    # One step too many is done to get to the leaf node
+    # Therefore, start with -1 as the height
+    return -1 if node.nil?
+
+    max_left = height(node.left) + 1
+    max_right = height(node.right) + 1
+
+    max_left > max_right ? max_left : max_right
+  end
+
   # Method provided by student of TOP
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -158,4 +170,4 @@ tree.find(tree.root, 25)
 tree2 = Tree.new([36,81,50,30,20,85,82,75,34,32,85,81,50,40,70,60,82,81,65,70,32,36,75])
 tree2.insert(tree2.root, 42)
 tree2.insert(tree2.root, 90)
-p tree2.postorder
+puts tree2.height(tree2.root)
