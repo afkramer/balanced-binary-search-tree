@@ -173,6 +173,11 @@ class Tree
     (leaf_depths.min - leaf_depths.max).abs <= 1
   end
 
+  def rebalance
+    array = inorder
+    @root = build_tree(array, 0, array.length - 1)
+  end
+
   # Method provided by student of TOP
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -180,16 +185,3 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 end
-
-tree = Tree.new([90, 80, 90, 10, 70, 30, 10, 90, 50, 20, 40])
-tree.insert(tree.root, 60)
-tree.insert(tree.root, 5)
-tree.insert(tree.root, 25)
-tree.find(tree.root, 25)
-tree2 = Tree.new([36,81,50,30,20,85,82,75,34,32,85,81,50,40,70,60,82,81,65,70,32,36,75])
-tree2.insert(tree2.root, 42)
-tree2.insert(tree2.root, 90)
-tree2.insert(tree2.root, 95)
-tree2.insert(tree2.root, 96)
-tree2.insert(tree2.root, 97)
-puts tree2.balanced?
