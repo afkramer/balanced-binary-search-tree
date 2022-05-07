@@ -154,6 +154,19 @@ class Tree
     max_left > max_right ? max_left : max_right
   end
 
+  # Number of edges in the path from given node to root
+  def depth(node, curr_node = @root, edges = 0)
+    return nil if node.nil?
+
+    if node.data < curr_node.data
+      depth(node, curr_node.left, edges + 1)
+    elsif node.data > curr_node.data
+      depth(node, curr_node.right, edges + 1)
+    else
+      edges
+    end
+  end
+
   # Method provided by student of TOP
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -170,4 +183,4 @@ tree.find(tree.root, 25)
 tree2 = Tree.new([36,81,50,30,20,85,82,75,34,32,85,81,50,40,70,60,82,81,65,70,32,36,75])
 tree2.insert(tree2.root, 42)
 tree2.insert(tree2.root, 90)
-puts tree2.height(tree2.root)
+puts tree2.depth(tree2.find(tree2.root, 72))
